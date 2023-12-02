@@ -27,7 +27,7 @@
                             </div>
 
                             <div class="account">
-                                <a href="#" class="btn search-button btn-md d-none d-md-block ml-4"><i class="fa fa-user-circle"></i> ACCOUNT</a>    
+                                <router-link :to="{name: 'login'}" class="btn search-button btn-md d-none d-md-block ml-4"><i class="fa fa-user-circle"></i> ACCOUNT</router-link>    
                             </div>
 
                         </div>
