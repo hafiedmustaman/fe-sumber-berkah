@@ -21,7 +21,7 @@ const routes = [
     {
         path: '/customer/dashboard',
         name: 'dashboard',
-        component: () => import( /* webpackChunkName: "login" */ '@/views/dashboard/Index.vue'),
+        component: () => import( /* webpackChunkName: "login" */ '../views/dashboard/Index.vue'),
         //chek is loggedIn
         meta: {
             requiresAuth: true
