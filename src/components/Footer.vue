@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 mb-4">
-                    <h4 class="font-weight-bold">PEMBAYARAAN</h4>
+                    <h4 class="font-weight-bold">PEMBAYARAN</h4>
                     <hr style="border-top: 3px solid rgb(226 232 240);border-radius:.5rem">
                     <div class="row">
                         <div class="col-md-4 col-4 mb-3">
