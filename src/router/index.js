@@ -22,9 +22,27 @@ const routes = [
         path: '/customer/dashboard',
         name: 'dashboard',
         component: () => import( /* webpackChunkName: "login" */ '../views/dashboard/Index.vue'),
-        //chek is loggedIn
+        //check is loggedIn
         meta: {
             requiresAuth: true
+        }
+    },
+    {
+        path: '/customer/order',
+        name: 'order',
+        component: () => import(/* webpackChunkName: "order" */ '../views/order/Index.vue'),
+        meta: {
+          //chek is loggedIn
+          requiresAuth: true
+        }
+      },
+    {
+        path: '/customer/order/:snap_token',
+        name: 'detail_order',
+        component: () => import(/* webpackChunkName: "detail_order" */ '../views/order/Show.vue'),
+        meta: {
+          //chek is loggedIn
+          requiresAuth: true
         }
     },
 ]
