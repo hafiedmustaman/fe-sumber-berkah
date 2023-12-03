@@ -85,6 +85,16 @@ const auth = {
     //getters
     getters: {
 
+        //get current user
+        currentUser(state) {
+        return state.user // <-- return dengan data user
+        },
+    
+        //loggedIn
+        isLoggedIn(state) {
+        return state.token // return dengan data token
+        },
+    
     }
 
 }
