@@ -24,7 +24,12 @@ const auth = {
         AUTH_SUCCESS(state, token, user) {
             state.token   = token // <-- assign state token dengan response token
             state.user    = user // <-- assign state user dengan response data user
-        }
+        },
+
+        //update state user dari hasil response register / login
+        GET_USER(state, user) {
+            state.user = user // <-- assign state user dengan response data user
+        },
 
     },
 
@@ -59,10 +64,13 @@ const auth = {
                         localStorage.setItem('user', JSON.stringify(user))
 
                         //set default header axios dengan token
-                        Api.defaults.headers.common['Authorization'] = "Bearer " +  token
+                        Api.defaults.headers.common['Authorization'] = "Bearer " + token
 
                         //commit auth success ke mutation
                         commit('AUTH_SUCCESS', token, user)
+
+                        //commit get user ke mutation
+                        commit('GET_USER', user)
 
                         //resolve ke component dengan hasil response
                         resolve(response)
@@ -78,7 +86,23 @@ const auth = {
                     })
 
             })
-        }
+        },
+
+        //action getUser
+        getUser({ commit }) {
+
+            //ambil data token dari localStorage
+            const token = localStorage.getItem('token')
+
+            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+            Api.get('/user')
+            .then(response => {
+                
+                //commit ke mutatuin GET_USER dengan hasil response
+                commit('GET_USER', response.data.user)
+
+            })
+        },
 
     },
 
@@ -87,14 +111,14 @@ const auth = {
 
         //get current user
         currentUser(state) {
-        return state.user // <-- return dengan data user
+            return state.user // <-- return dengan data user
         },
-    
+
         //loggedIn
         isLoggedIn(state) {
-        return state.token // return dengan data token
+            return state.token // return dengan data token
         },
-    
+
     }
 
 }
