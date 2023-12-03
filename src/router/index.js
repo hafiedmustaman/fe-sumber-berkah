@@ -3,6 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 // createRouter digunakan untuk membuat konfigurasi sebuah router di dalam vue router.
 // createWebHistory digunakan untuk membuat URL dari vue router menjadi lebih friendly.
 
+//import store vuex
+import store from '../store'
+
 //define a routes
 const routes = [
     {
@@ -14,7 +17,16 @@ const routes = [
         path: '/login',
         name: 'login',
         component: () => import( /* webpackChunkName: "login" */ '../views/auth/Login.vue')
-    }
+    },
+    {
+        path: '/customer/dashboard',
+        name: 'dashboard',
+        component: () => import( /* webpackChunkName: "login" */ '@/views/dashboard/Index.vue'),
+        //chek is loggedIn
+        meta: {
+            requiresAuth: true
+        }
+    },
 ]
 // path --> merupakan URL yang akan dihasilkan, di atas kita set dengan /register dan /login, jadi jika ada yang mengakses URL tersebut, maka route inilah yang akan digunakan.
 // name --> merupakan nama dari route itu sendiri, ini akan mepermudah kita dalam pemanggilan route di dalam component.
@@ -25,5 +37,19 @@ const router = createRouter({
     history: createWebHistory(),
     routes // <-- routes
 })
+
+//define route for handle authentication
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        //cek nilai dari getters isLoggedIn di module auth
+        if (store.getters['auth/isLoggedIn']) {
+        next()
+        return
+      }
+      next('/login')
+    } else {
+      next()
+    }
+  })
 
 export default router
