@@ -35,7 +35,7 @@ const routes = [
           //chek is loggedIn
           requiresAuth: true
         }
-      },
+    },
     {
         path: '/customer/order/:snap_token',
         name: 'detail_order',
@@ -49,6 +49,11 @@ const routes = [
         path: '/',
         name: 'home',
         component: () => import( /* webpackChunkName: "home" */ '../views/home/Index.vue')
+    },
+    {
+        path: '/product/:slug',
+        name: 'detail_product',
+        component: () => import(/* webpackChunkName: "detail_product" */ '../views/product/Show.vue')
     },
 ]
 // path --> merupakan URL yang akan dihasilkan, di atas kita set dengan /register dan /login, jadi jika ada yang mengakses URL tersebut, maka route inilah yang akan digunakan.
