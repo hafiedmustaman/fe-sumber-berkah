@@ -9,7 +9,7 @@
                     <img :src="category.image" style="width:35px"> {{ category.name }}
                 </router-link>
                 
-                <a href="#" class="list-group-item text-center active shadow-sm font-weight-bold text-decoration-none">LIHAT KATEGORI LAINNYA <i class="fa fa-long-arrow-alt-right"></i></a>
+                <router-link :to="{name: 'categories'}" class="list-group-item text-center active shadow-sm font-weight-bold text-decoration-none">LIHAT KATEGORI LAINNYA <i class="fa fa-long-arrow-alt-right"></i></router-link>
             </ul>
         </div>
     </div>
