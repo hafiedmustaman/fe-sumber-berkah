@@ -45,6 +45,11 @@ const routes = [
           requiresAuth: true
         }
     },
+    {
+        path: '/',
+        name: 'home',
+        component: () => import( /* webpackChunkName: "home" */ '../views/home/Index.vue')
+    },
 ]
 // path --> merupakan URL yang akan dihasilkan, di atas kita set dengan /register dan /login, jadi jika ada yang mengakses URL tersebut, maka route inilah yang akan digunakan.
 // name --> merupakan nama dari route itu sendiri, ini akan mepermudah kita dalam pemanggilan route di dalam component.
