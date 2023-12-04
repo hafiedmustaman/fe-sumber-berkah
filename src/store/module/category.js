@@ -11,6 +11,9 @@ const category = {
 
         //index categories
         categories: [],
+
+        //product in category
+        productInCategory: []
     
     },
 
@@ -21,6 +24,11 @@ const category = {
         GET_CATEGORIES(state, categories) {
             state.categories = categories
         },
+
+        //set state productInCategory dengan data dari response
+        PRODUCT_IN_CATEGORY(state, products) {
+            state.productInCategory = products
+        }
 
     },
 
@@ -44,6 +52,23 @@ const category = {
 
             })
         },
+
+        //action get data product berdasarkan category
+        getProductInCategory({ commit }, slug) {
+
+            //get data product by category ke server
+            Api.get(`/category/${ slug }`)
+            .then(response => {
+
+                //commit ke mutation PRODUCT_IN_CATEGORY dengan response data
+                commit('PRODUCT_IN_CATEGORY', response.data.product)
+
+            }).catch(error => {
+
+                console.log(error)
+
+            })
+        }
 
     },
 
