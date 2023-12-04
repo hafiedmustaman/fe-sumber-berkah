@@ -5,9 +5,9 @@
             <hr>
             <ul class="list-group">
                 
-                <a href="#" v-for="category in categories" :key="category.id" class="list-group-item shadow-sm font-weight-bold text-decoration-none text-dark">
+                <router-link :to="{name: 'detail_category', params:{slug: category.slug}}" v-for="category in categories" :key="category.id" class="list-group-item shadow-sm font-weight-bold text-decoration-none text-dark">
                     <img :src="category.image" style="width:35px"> {{ category.name }}
-                </a>
+                </router-link>
                 
                 <a href="#" class="list-group-item text-center active shadow-sm font-weight-bold text-decoration-none">LIHAT KATEGORI LAINNYA <i class="fa fa-long-arrow-alt-right"></i></a>
             </ul>
