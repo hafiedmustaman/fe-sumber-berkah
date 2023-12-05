@@ -16,6 +16,9 @@ import slider from './module/slider'
 //import module product
 import product from './module/product'
 
+//import module cart
+import cart from './module/cart'
+
 //create store vuex
 export default createStore({
 
@@ -25,6 +28,7 @@ export default createStore({
         category,   // <-- module category
         slider,     // <-- module slider
         product,    // <-- module product
+        cart,       // <-- module cart
     }
 
 })
