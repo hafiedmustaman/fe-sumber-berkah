@@ -39,7 +39,7 @@
                                   </tr>
                               </tbody>
                           </table>
-                          <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-shopping-cart"></i> TAMBAH KE KERANJANG</button>
+                          <button @click.prevent="addToCart(product.id, calculateDiscount(product), product.weight)" class="btn btn-primary btn-lg btn-block"><i class="fa fa-shopping-cart"></i> TAMBAH KE KERANJANG</button>
                       </div>
                   </div>
               </div>
@@ -56,9 +56,9 @@
               </div>
           </div>
       </div>
-</template>
+  </template>
   
-<script>
+  <script>
       import { computed, onMounted } from 'vue'   // computed dan onMounted
       import { useStore } from 'vuex' // store Vuex
       import { useRoute, useRouter } from 'vue-router' // vue router
@@ -74,8 +74,8 @@
   
               //vue router
               const router = useRouter()
-              
-              //store vuex
+  
+               //store vuex
               const store = useStore()
   
               //onMounted akan menjalankan action "getDetailProduct" di module "product" Vuex
@@ -83,19 +83,42 @@
                   store.dispatch('product/getDetailProduct', route.params.slug)
               })
   
-              //computed properti digunakan untuk mendapatkan data detail product dari state "product" di module "product" Vuex 
+              //computed properti digunakan untuk mendapatkan data detail product dari state "product" di module "product" Vuex
               const product = computed(() => {
                   return store.state.product.product
               })
+  
+              /**
+               * function addToCart
+               */
+              function addToCart(product_id, price, weight) {
+                  
+                  //check token terlebih dahulu
+                  const token = store.state.auth.token
+  
+                  if(!token) {
+                      return router.push({name: 'login'})
+                  }
+  
+                  //panggil action addToCart di module cart
+                  store.dispatch('cart/addToCart', {
+                      product_id: product_id,
+                      price: price,
+                      weight: weight,
+                      quantity: 1
+                  }) 
+  
+              }
   
               return {
                   route,
                   router,
                   store,
                   product,
+                  addToCart
               }
   
           }
   
-    }
-</script>
+      }
+  </script>
