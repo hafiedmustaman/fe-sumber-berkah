@@ -30,11 +30,6 @@ const cart = {
             state.cartTotal = total
         },
 
-        //get cart weight
-        CART_WEIGHT(state, weight) {
-            state.cartWeight = weight
-        },
-
     },
 
     //actions
@@ -81,6 +76,47 @@ const cart = {
             })
         },
 
+        //cart count
+        cartCount({ commit }) {
+
+            //get data token dan user
+            const token = localStorage.getItem('token')
+
+            //set axios header dengan type Authorization + Bearer token
+            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+
+            //get dat cart
+            Api.get('/cart')
+            .then(response => {
+                
+                //commit mutation GET_CART
+                commit('GET_CART', response.data.cart)
+
+            })
+
+        },
+
+        //cart total
+        cartTotal({ commit }) {
+
+            //get data token dan user
+            const token = localStorage.getItem('token')
+
+            //set axios header dengan type Authorization + Bearer token
+            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+
+            //get dat cart
+            Api.get('/cart/total')
+            .then(response => {
+                
+                //commit mutation GET_CART
+                commit('TOTAL_CART', response.data.total)
+
+            })
+
+        },
+
+
     },
 
     //getters
@@ -94,6 +130,11 @@ const cart = {
         //count cart
         cartCount(state) {
             return state.cart.length
+        },
+
+        //cart total
+        cartTotal(state) {
+            return state.cartTotal
         }
 
     }
