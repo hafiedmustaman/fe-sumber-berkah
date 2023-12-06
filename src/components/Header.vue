@@ -5,7 +5,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-3 col-7">
                         <router-link :to="{name: 'home'}" class="text-decoration-none" data-abc="true">
-                            <span class="logo"><i class="fa fa-store-alt"></i> SUMBER BERKAH STORE </span>
+                            <span class="logo"><i class="fa fa-apple-alt"></i> APPLE STORE </span>
                         </router-link>
                     </div>
                     <div class="col-md-5 d-none d-md-block">
@@ -24,7 +24,7 @@
                         <div class="d-flex justify-content-end">
 
                             <div class="cart-header">
-                                <a href="#" class="btn search-button btn-md" style="color: #ffffff;background-color: #6677ef;border-color: #ffffff;"><i class="fa fa-shopping-cart"></i> 0 | Rp. 0 </a>
+                                <a href="#" class="btn search-button btn-md" style="color: #ffffff;background-color: #6677ef;border-color: #ffffff;"><i class="fa fa-shopping-cart"></i> {{ cartCount }} | Rp. {{ moneyFormat(cartTotal) }} </a>
                             </div>
 
                             <div class="account">
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+    import { computed, onMounted } from 'vue'
+    import { useStore } from 'vuex'
 
     export default {
 
@@ -56,14 +56,48 @@ import { useStore } from 'vuex'
             //computed
             const isLoggedIn = computed(() => {
 
-                //get getters isLoggedIn dari module auth
+                //get getter "isLoggedIn" dari module "auth"
                 return store.getters['auth/isLoggedIn']
 
             })
 
+            //cart count
+            const cartCount = computed(() => {
+
+                //get getter "cartCount" dari module "auth"
+                return store.getters['cart/cartCount']
+            })
+
+            //cart total
+            const cartTotal = computed(() => {
+
+                //get getter "cartTotal" dari module "auth"
+                return store.getters['cart/cartTotal']
+            })
+
+            //mounted
+            onMounted(() => {
+
+                //check state token
+                const token = store.state.auth.token
+
+                if(!token) {
+                    return
+                }
+
+                //saat mounted, akan memanggil action "cartCount" di module "cart"
+                store.dispatch('cart/cartCount')
+
+                //saat mounted, akan memanggil action "cartTotal" di module "cart"
+                store.dispatch('cart/cartTotal')
+            })
+
+
             return {
                 store,
-                isLoggedIn
+                isLoggedIn,
+                cartTotal,
+                cartCount
             }
 
         }
