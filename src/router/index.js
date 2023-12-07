@@ -59,12 +59,21 @@ const routes = [
         path: '/categories',
         name: 'categories',
         component: () => import(/* webpackChunkName: "category" */ '../views/category/Index.vue')
-      },
-      {
+    },
+    {
         path: '/category/:slug',
         name: 'detail_category',
         component: () => import(/* webpackChunkName: "detail_category" */ '../views/category/Show.vue')
-      },
+    },
+    {
+        path: '/cart',
+        name: 'cart',
+        component: () => import(/* webpackChunkName: "cart" */ '../views/cart/Index.vue'),
+        meta: {
+          //chek is loggedIn
+          requiresAuth: true
+        }
+    }
 ]
 // path --> merupakan URL yang akan dihasilkan, di atas kita set dengan /register dan /login, jadi jika ada yang mengakses URL tersebut, maka route inilah yang akan digunakan.
 // name --> merupakan nama dari route itu sendiri, ini akan mepermudah kita dalam pemanggilan route di dalam component.
