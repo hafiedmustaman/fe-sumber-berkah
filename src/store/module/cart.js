@@ -15,6 +15,9 @@ const cart = {
         //total cart
         cartTotal: 0,
 
+        //cart weight
+        cartWeight: 0
+
     },
 
     //mutations
@@ -28,6 +31,11 @@ const cart = {
         //get total cart
         TOTAL_CART(state, total) {
             state.cartTotal = total
+        },
+
+        //get cart weight
+        CART_WEIGHT(state, weight) {
+            state.cartWeight = weight
         },
 
     },
@@ -111,6 +119,25 @@ const cart = {
                 
                 //commit mutation GET_CART
                 commit('TOTAL_CART', response.data.total)
+
+            })
+
+        },
+
+        //cart weight
+        cartWeight({ commit }) {
+
+            //get data token dan user
+            const token = localStorage.getItem('token')
+
+            //set axios header dengan type Authorization + Bearer token
+            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+
+            Api.get('/cart/totalWeight')
+            .then(response => {
+                
+                //commit mutation CART_WEIGHT
+                commit('CART_WEIGHT', response.data.total)
 
             })
 
