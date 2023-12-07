@@ -91,7 +91,7 @@ const cart = {
             const token = localStorage.getItem('token')
 
             //set axios header dengan type Authorization + Bearer token
-            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+            Api.defaults.headers.common['Authorization'] = "Bearer " + token
 
             //get dat cart
             Api.get('/cart')
@@ -111,7 +111,7 @@ const cart = {
             const token = localStorage.getItem('token')
 
             //set axios header dengan type Authorization + Bearer token
-            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+            Api.defaults.headers.common['Authorization'] = "Bearer " + token
 
             //get dat cart
             Api.get('/cart/total')
@@ -131,13 +131,56 @@ const cart = {
             const token = localStorage.getItem('token')
 
             //set axios header dengan type Authorization + Bearer token
-            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+            Api.defaults.headers.common['Authorization'] = "Bearer " + token
 
             Api.get('/cart/totalWeight')
             .then(response => {
                 
                 //commit mutation CART_WEIGHT
                 commit('CART_WEIGHT', response.data.total)
+
+            })
+
+        },
+
+        //action remove cart
+        removeCart({ commit }, cart_id) {
+
+            //get data token dan user
+            const token = localStorage.getItem('token')
+
+            //set axios header dengan type Authorization + Bearer token
+            Api.defaults.headers.common['Authorization'] = "Bearer " + token
+
+            Api.post('/cart/remove', {
+                cart_id: cart_id
+            })
+            .then(() => {
+                
+
+                //get cart
+                Api.get('/cart')
+                .then(response => {
+                    
+                    commit('GET_CART', response.data.cart)
+
+                })
+
+                //get total cart
+                Api.get('/cart/total')
+                .then(response => {
+                    
+                    commit('TOTAL_CART', response.data.total)
+
+                })
+
+                //get total cart weight
+                Api.get('/cart/totalWeight')
+                .then(response => {
+                    
+                    commit('CART_WEIGHT', response.data.total)
+
+                })
 
             })
 
