@@ -37,7 +37,7 @@
   
                                           <br>
                                           <div class="text-right">
-                                              <button class="btn btn-sm btn-danger">
+                                              <button @click.prevent="removeCart(cart.id)" class="btn btn-sm btn-danger">
                                                   <i class="fa fa-trash"></i>
                                               </button>
                                           </div>
@@ -119,9 +119,9 @@
               onMounted(() => {
               
                   //menjalankan beberapa actions di module cart
-                  store.dispatch('cart/cartCount')  // <-- untuk memanggil action "cartCount" di module "cart"
-                  store.dispatch('cart/cartTotal')  // <-- untuk memanggil action "cartTotal" di module "cart"
-                  store.dispatch('cart/cartWeight') // <-- untuk memanggil action "cartWeight" di module "cart"
+                      store.dispatch('cart/cartCount')  // <-- untuk memanggil action "cartCount" di module "cart"
+                      store.dispatch('cart/cartTotal')  // <-- untuk memanggil action "cartTotal" di module "cart"
+                      store.dispatch('cart/cartWeight') // <-- untuk memanggil action "cartWeight" di module "cart"
               
               })
   
@@ -140,11 +140,19 @@
                   return store.state.cart.cartWeight
               })
   
+              /**
+               * remove cart
+               */
+              function removeCart(cart_id) {
+                  //panggil actions "removeCart" di module "cart" dengan parameter "cart_id"
+                  store.dispatch('cart/removeCart', cart_id)
+              }
   
               return {
                   carts,              // <-- state carts
                   cartTotal,          // <-- state cartTotal
                   cartWeight,         // <-- state cartWeight
+                  removeCart,         // <-- method removeCart
               }
   
           }
