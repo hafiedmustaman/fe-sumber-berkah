@@ -64,7 +64,7 @@
                                       </td>
                                       <td class="set-td border-0 text-right">&nbsp; : Rp.</td>
                                       <td class="set-td border-0 text-right">
-                                          <p class="m-0" id="ongkir-cart"> 0</p>
+                                          <p class="m-0" id="ongkir-cart"> {{ moneyFormat(state.courier_cost) }}</p>
                                       </td>
                                   </tr>
                                   <tr>
@@ -177,7 +177,7 @@
                                   <div class="form-group">
                                       <label class="font-weight-bold">ALAMAT LENGKAP</label>
                                       <textarea class="form-control" id="alamat" rows="3"
-                                          placeholder="Alamat Lengkap&#10;&#10;Contoh: Jl. Wonorejo Selatan 1 Kav. 84, Surabaya, Jawa Timur 60296"
+                                          placeholder="Alamat Lengkap&#10;&#10;Contoh: Perum. Griya Palem Indah, B-17 Jombang Jawa Timur 61419"
                                           v-model="state.address"></textarea>
                                       <div v-if="validation.address" class="mt-2 alert alert-danger">
                                           Masukkan Alamat Lengkap
@@ -205,6 +205,7 @@
       import { onMounted, computed, reactive } from 'vue'
       import { useStore } from 'vuex' // <-- vuex
       import Api from '../../api/Api' // <-- global API endpoint
+      import { useRouter } from 'vue-router' // vue router
   
       export default {
   
@@ -214,6 +215,9 @@
   
               //store vuex
               const store = useStore()
+  
+              //vue router
+              const router = useRouter()
   
               //mounted cart
               onMounted(() => {
@@ -329,8 +333,8 @@
   
                   Api.post('/rajaongkir/checkOngkir', {
                       city_destination: state.city_id,    // <-- ID kota
-                      weight: cartWeight.value,   // berat produk
-                      courier: state.courier_type         // jenis kurir
+                      weight: cartWeight.value,           // <-- berat produk
+                      courier: state.courier_type         // <-- jenis kurir
                   })
                   .then(response => {
   
@@ -359,7 +363,7 @@
                   //hitung grandrotal
                   const token = store.state.auth.token
   
-                  Api.defaults.headers.common['Authorization'] = "Bearer" +token
+                  Api.defaults.headers.common['Authorization'] = "Bearer " +token
                   Api.get('cart/total')
                   .then(response => {
   
@@ -370,6 +374,58 @@
   
                   //show button checkout
                   state.buttonCheckout = true
+              }
+  
+              //method/function checkout
+              function checkout() {
+  
+                  //ceck apakah ada nama, phone, address dan berat produk ?
+                  if (state.name && state.phone && state.address && cartWeight.value) {
+                      
+                      //define variable
+                      let data = {
+                          name:               state.name,
+                          phone:              state.phone,
+                          province_id:        state.province_id,
+                          city_id:            state.city_id,
+                          courier_type:       state.courier_type,
+                          courier_service:    state.courier_service,
+                          courier_cost:       state.courier_cost,
+                          weight:             cartWeight.value,
+                          address:            state.address,
+                          grandTotal:         state.grandTotal
+                      }
+                      store.dispatch('cart/checkout', data)
+                          .then(response => {
+  
+                              //jika berhasil, arahakan ke detail order dengan parameter snap_token midtrans
+                              router.push({
+                                  name: 'detail_order',
+                                  params: {
+                                      snap_token: response[0].snap_token
+                                  }
+                              })
+                          }).catch(error => {
+                              console.log(error)
+                          })
+  
+                  }
+  
+                  //check validasi name
+                  if (!state.name) {
+                      validation.name = true
+                  }
+  
+                      //check validasi phone
+                  if (!state.phone) {
+                      validation.phone = true
+                  }
+  
+                      //check validasi address
+                  if (!state.address) {
+                      validation.address = true
+                  }
+  
               }
   
               return {
@@ -384,6 +440,7 @@
                   getCourier,         // <-- get data courier
                   getOngkir,          // <-- get data ongkir
                   getCostService,     // <-- get cost dan service shipping
+                  checkout            // <-- function checkout 
               }
   
           }
