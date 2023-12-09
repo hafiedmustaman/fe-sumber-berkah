@@ -177,7 +177,7 @@
                                   <div class="form-group">
                                       <label class="font-weight-bold">ALAMAT LENGKAP</label>
                                       <textarea class="form-control" id="alamat" rows="3"
-                                          placeholder="Alamat Lengkap&#10;&#10;Contoh: Perum. Griya Palem Indah, B-17 Jombang Jawa Timur 61419"
+                                          placeholder="Alamat Lengkap&#10;&#10;Contoh: Jl. Wonorejo Selatan 1 Kav. 84 Surabaya, Jawa Timur 60296"
                                           v-model="state.address"></textarea>
                                       <div v-if="validation.address" class="mt-2 alert alert-danger">
                                           Masukkan Alamat Lengkap

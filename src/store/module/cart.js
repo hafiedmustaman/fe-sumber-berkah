@@ -38,6 +38,13 @@ const cart = {
             state.cartWeight = weight
         },
 
+        //clear all cart
+        CLEAR_CART(state) {
+            state.cart       = []
+            state.cartTotal  = 0
+            state.cartWeight = 0
+        }
+
     },
 
     //actions
@@ -51,7 +58,7 @@ const cart = {
             const user  = JSON.parse(localStorage.getItem('user'))
 
             //set axios header dengan type Authorization + Bearer token
-            Api.defaults.headers.common['Authorization'] = "Bearer " +token
+            Api.defaults.headers.common['Authorization'] = "Bearer " + token
             
             //send data cart ke server
             Api.post('/cart', {
@@ -143,7 +150,7 @@ const cart = {
 
         },
 
-        //action remove cart
+        //remove cart
         removeCart({ commit }, cart_id) {
 
             //get data token dan user
@@ -185,6 +192,50 @@ const cart = {
             })
 
         },
+
+        //checkout
+        checkout({ commit }, data) {
+
+            return new Promise((resolve, reject) => {
+
+                Api.post('/checkout', {
+                    
+                    courier:    data.courier_type,
+                    service:    data.courier_service,
+                    cost:       data.courier_cost,
+                    weight:     data.weight,
+                    name:       data.name,
+                    phone:      data.phone,
+                    province:   data.province_id,
+                    city:       data.city_id,
+                    address:    data.address,
+                    grand_total:data.grandTotal
+
+                })
+                .then(response => {
+
+                    resolve(response.data)
+
+                    //remove all Cart  on database
+                    Api.post('/cart/removeAll')
+                    .then(() => {
+
+                        //clear  cart
+                        commit('CLEAR_CART')
+
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+
+                })
+                .catch(error => {
+                    reject(error)
+                })
+
+            })
+
+        }
 
 
     },
